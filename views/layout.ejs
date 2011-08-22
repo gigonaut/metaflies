@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title || "metaflies" %></title>
+    <title><%= title %></title>
     <link rel='stylesheet' href='/css/core.css' />
-	<script src="/nowjs/now.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="/js/ejs.js"></script>
 	<script src="/js/jquery.js"></script>
 	<script src="/js/app.js"></script>
+	<% if (routejs != null) { %>
+	<script src="/js/<%= routjs %>"></script
+	<% } %>
   </head>
   <body>
     <%- body %>

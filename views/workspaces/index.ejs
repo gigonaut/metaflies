@@ -1,0 +1,49 @@
+<p>Welcome to <%= workspace.name %></p>
+<div id="actions">
+	<form id="name_form" action="#" method="get">
+		<div>
+			<p>Please set your nickname</p>
+			<p><input name="nickname" id="nickname" type="text" /></p>
+			<p><input id="set_button" type="submit" value="send" /></p>
+		</div>
+	</form>
+	<form id="message_form" action="#" method="get">
+		<p>Post a message</p>
+		<div>
+			<textarea name="message" id="message"></textarea>
+			<p><input id="send_button" type="submit" value="send" /></p>
+		</div>
+	</form>
+	<form id="file_form" action="#" method="get">
+		<p>Post a file</p>
+		<div>
+			<input type="file" name="upload" value="" id="upload" />
+			<p><input id="send_button" type="submit" value="upload" /></p>
+		</div>
+	</form>
+	<div id="bookmarker">
+		<p>Drag the following link to the address bar:</p>
+		<a href="javascript:location.href='<%= bookmarklet %>?location='+encodeURIComponent(location.href)+'&name='+encodeURIComponent(document.title)">Post to <%= title %></a>
+	</div>
+</div>
+
+
+<div id="workspace">
+	<h1>Messages</h1>
+	<div id="messages">
+		<% _.each(workspace.posts, function(data) {%>
+			<div id="<%= data.key %>" class="message">
+				<p class="poster"><%= data.nickname %></p>
+				<p><%= data.message %></p>
+				<% if (data.isReply != true)  { %>
+				<div class="reply">
+					<form action="#" class="reply_form">
+						<textarea name="reply"></textarea>
+						<p><input type="submit" value="reply"></p>
+					</form>
+				</div>
+				<% } %>
+			</div>	
+		<%}) %>
+	</div>
+</div>

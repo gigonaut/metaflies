@@ -1,0 +1,12 @@
+<div id="<%= message.key %>" class="message">
+	<p class="poster"><%= data.nickname %></p>
+	<p><%= data.message %></p>
+	<% if (data.isReply != true)  { %>
+	<div class="reply">
+		<form action="#" class="reply_form">
+			<textarea name="reply"></textarea>
+			<p><input type="submit" value="reply"></p>
+		</form>
+	</div>
+	<% } %>
+</div>
