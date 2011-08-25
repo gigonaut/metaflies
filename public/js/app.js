@@ -1,21 +1,39 @@
 var socket = io.connect('http://localhost');
-var Metaflies = {}
+var Metaflies = {};
 
 var messageTemplate = new EJS({url: '/ejs/message.ejs'});
+var bookmarkTemplate = new EJS({url: '/ejs/bookmark.ejs'});
+var replyTemplate = new EJS({url: '/ejs/reply.ejs'});
 
 Metaflies.getWorkspace = function() {
 	path = window.location.pathname.split('/');
 	return path[path.length - 1];
 }
 
-Metaflies.send = function(message) {
+Metaflies.postMessage = function(message) {
 	var self = this;
-	socket.emit('post message', {message: message});
+	var workspace = self.getWorkspace();
+	var url = ['', workspace, 'posts'].join('/');
+	console.log(url);
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: message,
+		complete: function(data, other) {
+			console.log(data);
+			console.log(other);
+		}
+	})
 }
 
-Metaflies.setNickname = function(nickname) {
+Metaflies.postReply = function(message) {
 	var self = this;
-	socket.emit('set nickname', nickname);
+	var workspace = self.getWorkspace();
+	$.ajax({
+		url: ['http:/', workspace, 'posts'].join('/'),
+		method: 'POST',
+		data: JSON.stringify(message)
+	})
 }
 
 Metaflies.receiveMessage = function(data) {
@@ -28,25 +46,22 @@ Metaflies.receiveReply = function(data) {
 }
 
 Metaflies.receiveBookmark = function(data) {
-	var html = "";
-	html += '<div class="bookmark">';
-	html += '<p><a href="' + data.location + '" class="bookmark">' + data.name + '</a></p>';
-	html += '</div>';
-	console.log(html);
+	var html = bookmarkTemplate.render(data);
 	$('#messages').prepend(html);
 }
 
-Metaflies.receiveResponse = function(data) {
-	
+Metaflies.receiveReply = function(data) {
+	var thread = $('#' + data.parent_id);
+	var html = replyTemplate.render(data);
+	$('#messages').prepend(html);
 }
 
 Metaflies.init = function() {
 	var self = this;
 	self.initEvents();
-	
-	socket.on('receive message', self.receiveMessage);
-	socket.on('receive reply', self.receiveReply);
-	socket.on('receive bookmark', self.receiveBookmark);
+	socket.on('post added', self.receiveMessage);
+	socket.on('reply added', self.receiveReply);
+	socket.on('bookmark added', self.receiveBookmark);
 	// socket.on('message', self.recieve);
 }
 
@@ -63,7 +78,8 @@ Metaflies.initEvents = function() {
 	
 	$('#message_form').submit(function(evt) {
 		var message = $('#message').val();
-		self.send(message);
+		
+		self.postMessage({message: message});
 		$('#message').val('');
 		return false;
 	});

@@ -1,3 +1,4 @@
+<%= console.log(workspace) %>
 <p>Welcome to <%= workspace.name %></p>
 <div id="actions">
 	<form id="name_form" action="#" method="get">
@@ -31,19 +32,6 @@
 <div id="workspace">
 	<h1>Messages</h1>
 	<div id="messages">
-		<% _.each(workspace.posts, function(data) {%>
-			<div id="<%= data.key %>" class="message">
-				<p class="poster"><%= data.nickname %></p>
-				<p><%= data.message %></p>
-				<% if (data.isReply != true)  { %>
-				<div class="reply">
-					<form action="#" class="reply_form">
-						<textarea name="reply"></textarea>
-						<p><input type="submit" value="reply"></p>
-					</form>
-				</div>
-				<% } %>
-			</div>	
-		<%}) %>
+		
 	</div>
 </div>
