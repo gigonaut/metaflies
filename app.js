@@ -44,7 +44,7 @@ app.get('/', function(req, res) {
 	res.render('workspaces/new', {workspace: workspace})
 });
 
-app.get('/:workspace_id', requireWorkspace, function(req, res) {
+app.get('/:workspace_id', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
 	console.log('no_error');
 	req.session.currentUser = {username: 'ted'}
 	var workspaceId = req.param('workspace_id');
@@ -66,18 +66,34 @@ app.post('/workspaces', function(req, res) {
 });
 
 app.get('/:workspace_id/join', requireWorkspace, function(req, res) {
-	
-})
+	var workspace = req.workspace;
+	res.render('workspaces/join', {workspace: workspace});
+});
 
-app.post('/:workspace_id/posts', requireWorkspace, function(req, res) {
+app.post('/:workspace_id/join', requireWorkspace, function(req, res) {
+	var currentUser = req.session.currentUser || {}
+	var workspace = req.workspace;
+	currentUser.nickname = req.param('nickname');
+	if (workspace.isPrivate() && req.param('password') == workspace.password) {
+		currentUser.workspace = workspace.name;
+	}
+	console.log(currentUser)
+	req.session.currentUser = currentUser;
+	res.redirect('/' + req.param('workspace_id'))
+});
+
+app.post('/:workspace_id/posts', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
 	var message = req.body;
+	var workspace = req.worksapce;
+	var currentUser = req.session.currentUser;
+	message.nickname = currentUser.nickname;
 	var workspaceId = req.param('workspace_id');
 	console.log(message);
 	metaIo.io.sockets.in(workspaceId).emit('post added', message);
 	
 });
 
-app.get('/:workspace_id/bookmark', function(req, res) {
+app.get('/:workspace_id/bookmark', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
 	var location = req.param('location');
 	var locationName = req.param('name');
 	var info = {location: location, name: locationName}
@@ -99,15 +115,30 @@ function requireWorkspace(req, res, next) {
 }
 
 function requireAuthorization(req, res, next) {
+	var currentUser = req.session.currentUser;
 	var workspace = req.workspace;
 	if (!workspace.isPrivate()) {
+		currentUser = currentUser || {};
+		req.session.currentUser = currentUser;
+		next();
+	} else if (currentUser && currentUser.workspace == req.param('workspace_id')) {
 		next();
 	} else {
-		
+		res.redirect('/' + req.param('workspace_id') + '/join');
 	}
 	
 }
 
+
+function requireNickname(req, res, next) {
+	var currentUser = req.session.currentUser;
+	var workspace = req.workspace;
+	if (currentUser.nickname) {
+		next()
+	} else {
+		res.redirect('/' + req.param('workspace_id') + '/join');
+	}
+}
 // app.get('/:space_id', Pub.getWorkspace);
 // 
 // app.post('/:space_id', Pub.createWorkspace);

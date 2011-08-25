@@ -1,0 +1,10 @@
+<form id="name_form" action="/<%= workspace.name %>/join" method="post">
+	<div>
+		<p>Please set your nickname</p>
+		<p><input name="nickname" id="nickname" type="text" /></p>
+	<% if (workspace.isPrivate())  {%>
+		<p><input name="password" id="pass" type="password" /></p>
+	<% } %>
+		<p><input id="set_button" type="submit" value="send" /></p>
+	</div>
+</form>

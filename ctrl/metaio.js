@@ -57,7 +57,6 @@ function MetaIo(options) {
 				if (err) {
 					accept(err.message, false);
 				} else {
-					console.log(session);
 					data.session = new Session(data, session);
 					// accept the incoming connection
 					accept(null, true);
