@@ -21,21 +21,16 @@ function MetaIo(options) {
 		socket.session = socket.handshake.session;
 		socket.join(socket.handshake.workspaceId);
 
-		socket.on('client ready', function() {
-			
-		});
-		socket.on('post message', function(data) {
-			console.log(socket.session);
-			data.nickname = socket.session.currentUser.nickname;
-			data.postedAt = new Date();
-			data.message_id = ['message', Workspace.getRandomId(5)].join('_')
-			workspace.posts.push(data);
-			io.sockets.in(workspaceId).emit('post added', data);
-		});
-		
-		socket.on('set nickname', function(nickname) {
-			socket.session.currentUser = {nickname: nickname};
-		});
+		// socket.on('post message', function(data) {
+		// 	data.nickname = socket.session.currentUser.nickname;
+		// 	data.postedAt = new Date();
+		// 	console.log(Workspace.getRandomId(5));
+		// 	data.messageId = ['message', Workspace.getRandomId(5)].join('_');
+		// 	console.log('wtf???')
+		// 	console.log(data.messageId);
+		// 	workspace.posts.push(data);
+		// 	io.sockets.in(workspaceId).emit('post added', data);
+		// });
 	});
 	
 	io.set('authorization', function(data, accept) {

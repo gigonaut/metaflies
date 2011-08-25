@@ -46,7 +46,6 @@ app.get('/', function(req, res) {
 
 app.get('/:workspace_id', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
 	console.log('no_error');
-	req.session.currentUser = {username: 'ted'}
 	var workspaceId = req.param('workspace_id');
 	var workspace = req.workspace;
 	var bookmarklet = ['http:/', req.headers.host, req.param('workspace_id'), 'bookmark'].join('/');
@@ -84,7 +83,7 @@ app.post('/:workspace_id/join', requireWorkspace, function(req, res) {
 
 app.post('/:workspace_id/posts', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
 	var message = req.body;
-	var workspace = req.worksapce;
+	var workspace = req.workspace;
 	var currentUser = req.session.currentUser;
 	message.nickname = currentUser.nickname;
 	var workspaceId = req.param('workspace_id');
@@ -116,6 +115,7 @@ function requireWorkspace(req, res, next) {
 
 function requireAuthorization(req, res, next) {
 	var currentUser = req.session.currentUser;
+	console.log(currentUser);
 	var workspace = req.workspace;
 	if (!workspace.isPrivate()) {
 		currentUser = currentUser || {};
