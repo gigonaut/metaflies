@@ -1,4 +1,3 @@
-<%= console.log(workspace) %>
 <p>Welcome to <%= workspace.name %></p>
 <div id="actions">
 	<form id="message_form" action="#" method="get">
@@ -25,6 +24,19 @@
 <div id="workspace">
 	<h1>Messages</h1>
 	<div id="messages">
-		
+		<%_.each(workspace.messages, function(message) { %>
+			<div id="<%= message.messageId %>" class="message">
+				<p class="poster"><%= message.nickname %> posted:</p>
+				<p><%= data.message %></p>
+				<div class="replies">
+					<div class="post_reply">
+						<form action="#" class="reply_form">
+							<textarea class="reply" name="reply"></textarea>
+							<p><input type="submit" value="+reply"></p>
+						</form>
+					</div>
+				</div>
+			</div>
+		<% }) %>
 	</div>
 </div>

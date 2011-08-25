@@ -10,39 +10,16 @@ Metaflies.getWorkspace = function() {
 	return path[path.length - 1];
 }
 
-Metaflies.postMessage = function(message) {
-	var self = this;
-	var workspace = self.getWorkspace();
-	var url = ['', workspace, 'posts'].join('/');
-	console.log(url);
-	$.ajax({
-		url: url,
-		type: 'POST',
-		data: message,
-		complete: function(data, other) {
-			console.log(data);
-			console.log(other);
-		}
-	})
-}
-
-Metaflies.postReply = function(message) {
-	var self = this;
-	var workspace = self.getWorkspace();
-	$.ajax({
-		url: ['http:/', workspace, 'posts'].join('/'),
-		method: 'POST',
-		data: JSON.stringify(message)
-	})
-}
-
 Metaflies.receiveMessage = function(data) {
+	console.log(data);
 	var html = messageTemplate.render(data);
 	$('#messages').prepend(html);
 }
 
 Metaflies.receiveReply = function(data) {
-	
+	console.log(data);
+	var html = replyTemplate.render(data);
+	$('#' + data.messageId + ' div.replies').prepend(html);
 }
 
 Metaflies.receiveBookmark = function(data) {
@@ -77,19 +54,46 @@ Metaflies.initEvents = function() {
 	});
 	
 	$('#message_form').submit(function(evt) {
-		var message = $('#message').val();
+		var message = {message: $('#message').val()};
+		var workspace = self.getWorkspace();
+		var url = ['', workspace, 'posts'].join('/');
+		console.log(url);
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: message,
+			complete: function(data, other) {
+				console.log(data);
+				console.log(other);
+			}
+		});
 		
-		self.postMessage({message: message});
 		$('#message').val('');
 		return false;
 	});
 	
-	$('.reply_form').submit(function(evt) {
+	$('.reply_form').live('submit', function(evt) {
+		var reply = {};
+		var workspace = self.getWorkspace();
+		var url = ['', workspace, 'replies'].join('/');
 		
-	})
+		reply.reply = $(this).find('.reply').val();
+		reply.messageId = $(this).closest('.message').attr('id');
+		console.log(url);
+		$.ajax({
+			url: url,
+			type: 'POST',
+			data: reply,
+			complete: function(data, other) {
+				console.log(data);
+				console.log(other);
+			}
+		});
+		$(this).find('.reply').val('');
+		return false;
+	});
 }
 
 $(document).ready(function() {
 	Metaflies.init();
 });
-

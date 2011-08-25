@@ -1,12 +1,12 @@
-<div id="<%= message.message_id %>" class="message">
-	<p class="poster"><%= data.nickname %></p>
+<div id="<%= data.messageId %>" class="message">
+	<p class="poster"><%= data.nickname %> posted:</p>
 	<p><%= data.message %></p>
-	<% if (data.isReply != true)  { %>
-	<div class="reply">
-		<form action="#" class="reply_form">
-			<textarea name="reply"></textarea>
-			<p><input type="submit" value="+reply"></p>
-		</form>
+	<div class="replies">
+		<div class="post_reply">
+			<form action="#" class="reply_form">
+				<textarea class="reply" name="reply"></textarea>
+				<p><input type="submit" value="+reply"></p>
+			</form>
+		</div>
 	</div>
-	<% } %>
 </div>

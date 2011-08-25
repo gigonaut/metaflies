@@ -82,21 +82,37 @@ app.post('/:workspace_id/join', requireWorkspace, function(req, res) {
 });
 
 app.post('/:workspace_id/posts', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
-	var message = req.body;
-	var workspace = req.workspace;
-	var currentUser = req.session.currentUser;
+	var message = req.body,
+			workspace = req.workspace,
+			workspaceId = req.param('workspace_id'),
+			currentUser = req.session.currentUser;
+	
 	message.nickname = currentUser.nickname;
-	var workspaceId = req.param('workspace_id');
+	
+	message.messageId = ['message', Workspace.getRandomId(5)].join('_');
 	console.log(message);
 	metaIo.io.sockets.in(workspaceId).emit('post added', message);
+	res.send(200);
+});
+
+app.post('/:workspace_id/replies', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
+	var message = req.body,
+			workspace = req.workspace,
+			workspaceId = req.param('workspace_id'),
+			currentUser = req.session.currentUser;
+	message.nickname = currentUser.nickname;
+	console.log(message);
+	console.log(workspaceId);
+	metaIo.io.sockets.in(workspaceId).emit('reply added', message);
 	
+	res.send(200);
 });
 
 app.get('/:workspace_id/bookmark', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
 	var location = req.param('location');
 	var locationName = req.param('name');
 	var info = {location: location, name: locationName}
-	var workspace = req.param('space_id')
+	var workspace = req.param('workspace_id')
 	metaIo.io.sockets.in(workspace).emit('bookmark added', info)
 	res.redirect(req.param('location'));
 });
@@ -107,7 +123,7 @@ function requireWorkspace(req, res, next) {
 			console.log(err);
 			res.redirect('/');
 		} else {
-			req.workspace = data;
+			req.workspace = workspacer.workspaces[req.param('workspace_id')];
 			next();
 		}
 	});
