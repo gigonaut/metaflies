@@ -24,10 +24,13 @@
 <div id="workspace">
 	<h1>Messages</h1>
 	<div id="messages">
-		<%_.each(workspace.posts, function(post) { %>
+		<%_.each(workspace.posts.reverse(), function(post) { %>
 			<div id="<%= post.postId %>" class="message">
 				<% if (post.upload)  { %>
 				<p class="poster"><%= post.nickname %> posted a file:</p>
+				<% if (post.upload.mimeType.indexOf('image') !== -1) {%>
+				<p><img src="/d/<%= post.upload.metafliesPath %>" /></p>
+				<% } %>
 				<p><a href="/d/<%= post.upload.metafliesPath %>"><%= post.upload.name %></a></p>
 				<% } else if (post.location) { %>
 				<p class="poster"><%= post.nickname %></p>

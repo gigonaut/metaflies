@@ -3,6 +3,7 @@ var Metaflies = {};
 
 var messageTemplate = new EJS({url: '/ejs/message.ejs'});
 var bookmarkTemplate = new EJS({url: '/ejs/bookmark.ejs'});
+var uploadTemplate = new EJS({url: '/ejs/upload.ejs'});
 var replyTemplate = new EJS({url: '/ejs/reply.ejs'});
 
 Metaflies.getWorkspace = function() {
@@ -13,6 +14,12 @@ Metaflies.getWorkspace = function() {
 Metaflies.receivePost = function(data) {
 	console.log(data);
 	var html = messageTemplate.render(data);
+	$('#messages').prepend(html);
+}
+
+Metaflies.receiveUpload = function(data) {
+	console.log(data);
+	var html = uploadTemplate.render(data);
 	$('#messages').prepend(html);
 }
 
@@ -34,6 +41,7 @@ Metaflies.init = function() {
 	socket.on('post added', self.receivePost);
 	socket.on('reply added', self.receiveReply);
 	socket.on('bookmark added', self.receiveBookmark);
+	socket.on('upload added', self.receiveUpload);
 }
 
 Metaflies.initEvents = function() {

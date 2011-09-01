@@ -88,9 +88,10 @@ app.post('/:workspace_id/upload', requireWorkspace, requireAuthorization, requir
 	var workspace = req.workspace;
 	var currentUser = req.session.currentUser;
 	var post = {nickname: currentUser.nickname, uploadName: req.upload.filename, upload: upload}
+	console.log('uploading...')
 	console.log(post);
 	workspace.addPost(post);
-	metaIo.io.sockets.in(workspace.name).emit('file added', post);
+	metaIo.io.sockets.in(workspace.name).emit('upload added', post);
 	res.redirect('/' + req.param('workspace_id'));
 });
 

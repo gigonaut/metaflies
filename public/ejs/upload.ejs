@@ -1,5 +1,8 @@
 <div id="<%= data.postId %>" class="post">
 	<p class="poster"><%= data.nickname %> posted a file:</p>
+	<% if (data.upload.mimeType.indexOf('image') !== -1) {%>
+	<p><img src="/d/<%= data.upload.metafliesPath %>" /></p>
+	<% } %>
 	<p><a href="<%= data.upload.metafliesPath %>"><%= data.upload.name %></a></p>
 	<div class="replies">
 		<div class="post_reply">

@@ -43,11 +43,13 @@ Metaflies.upload = function(req, res, next) {
 									name: file.name, 
 									s3url: s3req.url, 
 									metafliesPath: full_path,
+									mimeType: mime.lookup(full_path),
 									creator_id: req.session.currentUser.nickname,
 									s3path: full_path,
 									filename: file_name
 								}
 								req.upload = recordData;
+								console.log(recordData.mimeType);
 								next();
 					    }
 					  });
