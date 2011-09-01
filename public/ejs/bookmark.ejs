@@ -1,12 +1,10 @@
-<div id="<%= message.message_id %>" class="bookmark">
+<div id="<%= data.post_id %>" class="bookmark">
 	<p class="poster"><%= data.nickname %></p>
 	<p><a href="<%= data.location %>"><%= data.name %></a></p>
-	<% if (data.isReply != true)  { %>
 	<div class="reply">
 		<form action="#" class="reply_form">
 			<textarea name="reply"></textarea>
 			<p><input type="submit" value="reply"></p>
 		</form>
 	</div>
-	<% } %>
 </div>

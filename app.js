@@ -81,33 +81,6 @@ app.post('/:workspace_id/join', requireWorkspace, function(req, res) {
 	res.redirect('/' + req.param('workspace_id'))
 });
 
-app.post('/:workspace_id/posts', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
-	var message = req.body,
-			workspace = req.workspace,
-			workspaceId = req.param('workspace_id'),
-			currentUser = req.session.currentUser;
-	
-	message.nickname = currentUser.nickname;
-	
-	message.messageId = ['message', Workspace.getRandomId(5)].join('_');
-	console.log(message);
-	metaIo.io.sockets.in(workspaceId).emit('post added', message);
-	res.send(200);
-});
-
-app.post('/:workspace_id/replies', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
-	var message = req.body,
-			workspace = req.workspace,
-			workspaceId = req.param('workspace_id'),
-			currentUser = req.session.currentUser;
-	message.nickname = currentUser.nickname;
-	console.log(message);
-	console.log(workspaceId);
-	metaIo.io.sockets.in(workspaceId).emit('reply added', message);
-	
-	res.send(200);
-});
-
 app.get('/:workspace_id/bookmark', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
 	var location = req.param('location');
 	var locationName = req.param('name');
@@ -116,6 +89,14 @@ app.get('/:workspace_id/bookmark', requireWorkspace, requireAuthorization, requi
 	metaIo.io.sockets.in(workspace).emit('bookmark added', info)
 	res.redirect(req.param('location'));
 });
+
+app.listen(9393);
+console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+function isURL(s){
+  var regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+  return regexp.test(s);
+};
 
 function requireWorkspace(req, res, next) {
 	workspacer.getWorkspace({name: req.param('workspace_id')}, function(err, data) {
@@ -142,9 +123,7 @@ function requireAuthorization(req, res, next) {
 	} else {
 		res.redirect('/' + req.param('workspace_id') + '/join');
 	}
-	
 }
-
 
 function requireNickname(req, res, next) {
 	var currentUser = req.session.currentUser;
@@ -155,29 +134,34 @@ function requireNickname(req, res, next) {
 		res.redirect('/' + req.param('workspace_id') + '/join');
 	}
 }
-// app.get('/:space_id', Pub.getWorkspace);
-// 
-// app.post('/:space_id', Pub.createWorkspace);
-// 
-// app.post('/:space_id/upload', function(req, res) {
-// 	//we will do something here to process the upload;
-// });
-// 
-// 
-// 
-// app.get('/:space_id/bookmark', Pub.postBookmark);
 
-
-app.listen(9393);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 // javascript:location.href='http://localhost:9393/workspaces/sweehat/bookmarks/build?location='+encodeURIComponent(location.href)+';name='+encodeURIComponent(document.title)
 
-
-//express and socket session linking
-
-
-function isURL(s){
-  var regexp = /^(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-  return regexp.test(s);
-};
+// app.post('/:workspace_id/posts', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
+// 	var message = req.body,
+// 			workspace = req.workspace,
+// 			workspaceId = req.param('workspace_id'),
+// 			currentUser = req.session.currentUser;
+// 	
+// 	message.nickname = currentUser.nickname;
+// 	
+// 	message.messageId = ['message', Workspace.getRandomId(5)].join('_');
+// 	metaIo.io.sockets.in(workspaceId).emit('post added', message);
+// 	res.send(200);
+// });
+// 
+// app.post('/:workspace_id/replies', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
+// 	var message = req.body,
+// 			workspace = req.workspace,
+// 			workspaceId = req.param('workspace_id'),
+// 			currentUser = req.session.currentUser;
+// 	message.nickname = currentUser.nickname;
+// 	console.log('replying');
+// 	console.log(message);
+// 	console.log(workspaceId);
+// 	console.log(metaIo);
+// 	metaIo.io.sockets.in(workspaceId).emit('reply added', message);
+// 	
+// 	res.send(200);
+// });

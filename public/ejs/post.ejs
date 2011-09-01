@@ -1,9 +1,6 @@
 <div id="<%= data.postId %>" class="post">
 	<p class="poster"><%= data.nickname %> posted:</p>
 	<p><%= data.message %></p>
-	<% if (data.location) { %>
-	<p><a href="<%= data.location %>"><%= data.name %></a></p>
-	<% } %>
 	<div class="replies">
 		<div class="post_reply">
 			<form action="#" class="reply_form">

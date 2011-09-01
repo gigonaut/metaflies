@@ -16,7 +16,7 @@
 	</form>
 	<div id="bookmarker">
 		<p>Drag the following link to the address bar:</p>
-		<a href="javascript:location.href='<%= bookmarklet %>?location='+encodeURIComponent(location.href)+'&name='+encodeURIComponent(document.title)">Post to <%= title %></a>
+		<a href="javascript:location.href='<%= bookmarklet %>?location='+encodeURIComponent(location.href)+'&name='+encodeURIComponent(document.title)">Post to <%= workspace.name %></a>
 	</div>
 </div>
 
@@ -24,10 +24,10 @@
 <div id="workspace">
 	<h1>Messages</h1>
 	<div id="messages">
-		<%_.each(workspace.messages, function(message) { %>
-			<div id="<%= message.messageId %>" class="message">
-				<p class="poster"><%= message.nickname %> posted:</p>
-				<p><%= data.message %></p>
+		<%_.each(workspace.posts, function(post) { %>
+			<div id="<%= post.postId %>" class="message">
+				<p class="poster"><%= post.nickname %> posted:</p>
+				<p><%= post.message %></p>
 				<div class="replies">
 					<div class="post_reply">
 						<form action="#" class="reply_form">
