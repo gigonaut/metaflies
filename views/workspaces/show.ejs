@@ -7,10 +7,10 @@
 			<p><input id="send_button" type="submit" value="send" /></p>
 		</div>
 	</form>
-	<form id="file_form" action="#" method="get">
+	<form id="file_form" action="/<%= workspace.name %>/upload" method="post" enctype="multipart/form-data">
 		<p>Post a file</p>
 		<div>
-			<input type="file" name="upload" value="" id="upload" />
+			<p><input type="file" name="upload" value=""></p>
 			<p><input id="send_button" type="submit" value="upload" /></p>
 		</div>
 	</form>
@@ -26,9 +26,23 @@
 	<div id="messages">
 		<%_.each(workspace.posts, function(post) { %>
 			<div id="<%= post.postId %>" class="message">
+				<% if (post.upload)  { %>
+				<p class="poster"><%= post.nickname %> posted a file:</p>
+				<p><a href="/d/<%= post.upload.metafliesPath %>"><%= post.upload.name %></a></p>
+				<% } else if (post.location) { %>
+				<p class="poster"><%= post.nickname %></p>
+				<p><a href="<%= post.location %>"><%= post.name %></a></p>
+				<% } else { %>
 				<p class="poster"><%= post.nickname %> posted:</p>
 				<p><%= post.message %></p>
+				<% } %>
 				<div class="replies">
+					<% _.each(post.replies, function(reply) {%>
+						<div id="<%= reply.replyId %>" class="reply">
+							<p class="poster"><%= reply.nickname %> replied:</p>
+							<p><%= reply.reply %></p>
+						</div>
+					<% }) %>
 					<div class="post_reply">
 						<form action="#" class="reply_form">
 							<textarea class="reply" name="reply"></textarea>

@@ -1,0 +1,12 @@
+<div id="<%= data.postId %>" class="post">
+	<p class="poster"><%= data.nickname %> posted a file:</p>
+	<p><a href="<%= data.upload.metafliesPath %>"><%= data.upload.name %></a></p>
+	<div class="replies">
+		<div class="post_reply">
+			<form action="#" class="reply_form">
+				<textarea class="reply" name="reply"></textarea>
+				<p><input type="submit" value="+reply"></p>
+			</form>
+		</div>
+	</div>
+</div>

@@ -4,11 +4,13 @@
  */
 
 var express = require('express'), 
-		MemoryStore = express.session.MemoryStore, 
-		app = module.exports = express.createServer(), 
+		MemoryStore = express.session.MemoryStore,
+		form = require('connect-form');
+		app = module.exports = express.createServer(form({ keepExtensions: true })), 
 		sessionStore = new MemoryStore(),
 		Workspace = require('./lib/workspace'),
-		Workspacer = require('./lib/workspacer'), 
+		Workspacer = require('./lib/workspacer'),
+		Metaflies = require('./ctrl/metaflies'), 
 		workspacer = new Workspacer(), 
 		metaIo = new require('./ctrl/metaio')({app: app, workspacer: workspacer, sessionStore: sessionStore}), 
 		_ = require('underscore');
@@ -81,14 +83,31 @@ app.post('/:workspace_id/join', requireWorkspace, function(req, res) {
 	res.redirect('/' + req.param('workspace_id'))
 });
 
+app.post('/:workspace_id/upload', requireWorkspace, requireAuthorization, requireNickname, Metaflies.upload, function(req, res) {
+	var upload = req.upload;
+	var workspace = req.workspace;
+	var currentUser = req.session.currentUser;
+	var post = {nickname: currentUser.nickname, uploadName: req.upload.filename, upload: upload}
+	console.log(post);
+	workspace.addPost(post);
+	metaIo.io.sockets.in(workspace.name).emit('file added', post);
+	res.redirect('/' + req.param('workspace_id'));
+});
+
+
+
 app.get('/:workspace_id/bookmark', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
 	var location = req.param('location');
 	var locationName = req.param('name');
-	var info = {location: location, name: locationName}
-	var workspace = req.param('workspace_id')
-	metaIo.io.sockets.in(workspace).emit('bookmark added', info)
+	var post = {location: location, name: locationName}
+	var workspace = req.workspace
+	workspace.addPost(post);
+	metaIo.io.sockets.in(workspace.name).emit('bookmark added', post)
 	res.redirect(req.param('location'));
 });
+
+
+app.get('/d/:workspace_id/:upload.:ext', requireWorkspace, requireAuthorization, requireNickname, Metaflies.download);
 
 app.listen(9393);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
@@ -134,34 +153,3 @@ function requireNickname(req, res, next) {
 		res.redirect('/' + req.param('workspace_id') + '/join');
 	}
 }
-
-
-// javascript:location.href='http://localhost:9393/workspaces/sweehat/bookmarks/build?location='+encodeURIComponent(location.href)+';name='+encodeURIComponent(document.title)
-
-// app.post('/:workspace_id/posts', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
-// 	var message = req.body,
-// 			workspace = req.workspace,
-// 			workspaceId = req.param('workspace_id'),
-// 			currentUser = req.session.currentUser;
-// 	
-// 	message.nickname = currentUser.nickname;
-// 	
-// 	message.messageId = ['message', Workspace.getRandomId(5)].join('_');
-// 	metaIo.io.sockets.in(workspaceId).emit('post added', message);
-// 	res.send(200);
-// });
-// 
-// app.post('/:workspace_id/replies', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
-// 	var message = req.body,
-// 			workspace = req.workspace,
-// 			workspaceId = req.param('workspace_id'),
-// 			currentUser = req.session.currentUser;
-// 	message.nickname = currentUser.nickname;
-// 	console.log('replying');
-// 	console.log(message);
-// 	console.log(workspaceId);
-// 	console.log(metaIo);
-// 	metaIo.io.sockets.in(workspaceId).emit('reply added', message);
-// 	
-// 	res.send(200);
-// });

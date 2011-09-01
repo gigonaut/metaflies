@@ -7,5 +7,9 @@
     , "ejs": ">= 0.0.1"
 		, "socket.io": "0.7.9"
 		, "underscore": "1.1.7"
+		, "connect": "1.6.1"
+		, "connect-form": "0.2.1"
+		, "knox": "0.0.9"
+		, "mime": "1.2.2"
   }
 }

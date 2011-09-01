@@ -40,11 +40,11 @@ Metaflies.initEvents = function() {
 	var self = this;
 	
 	$('#message_form').submit(function(evt) {
-		var message = {message: $('#message').val()};
+		var post = {message: $('#message').val()};
 		var workspace = self.getWorkspace();
 		// var url = ['', workspace, 'posts'].join('/');
-		if (message.message.length > 0) {
-			socket.emit('post sent', message)
+		if (post.message.length > 0) {
+			socket.emit('post sent', post)
 		}
 		$('#message').val('');
 		return false;
