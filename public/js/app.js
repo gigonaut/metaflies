@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost');
+var socket = io.connect('http://' + window.location.hostname);
 var Metaflies = {};
 
 var messageTemplate = new EJS({url: '/ejs/message.ejs'});
