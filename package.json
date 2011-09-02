@@ -1,6 +1,6 @@
 {
     "name": "metaflies-name"
-  , "version": "0.4.9"
+  , "version": "0.1.0"
   , "private": true
   , "dependencies": {
       "express": "2.4.0"
