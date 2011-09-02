@@ -12,13 +12,13 @@ Metaflies.getWorkspace = function() {
 }
 
 Metaflies.receivePost = function(data) {
-	console.log(data);
+	//console.log(data);
 	var html = messageTemplate.render(data);
 	$('#messages').prepend(html);
 }
 
 Metaflies.receiveUpload = function(data) {
-	console.log(data);
+	//console.log(data);
 	var html = uploadTemplate.render(data);
 	$('#messages').prepend(html);
 }
@@ -29,7 +29,7 @@ Metaflies.receiveBookmark = function(data) {
 }
 
 Metaflies.receiveReply = function(data) {
-	console.log(data);
+	//console.log(data);
 	var thread = $('#' + data.postId + ' div.replies');
 	var html = replyTemplate.render(data);
 	thread.prepend(html);

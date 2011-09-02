@@ -25,7 +25,7 @@
 	<h1>Messages</h1>
 	<div id="messages">
 		<%_.each(workspace.posts.reverse(), function(post) { %>
-			<div id="<%= post.postId %>" class="message">
+			<div id="<%= post.postId %>" class="post">
 				<% if (post.upload)  { %>
 				<p class="poster"><%= post.nickname %> posted a file:</p>
 				<% if (post.upload.mimeType.indexOf('image') !== -1) {%>
