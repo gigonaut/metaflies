@@ -1,6 +1,6 @@
 {
-    "name": "application-name"
-  , "version": "0.0.1"
+    "name": "metaflies-name"
+  , "version": "0.4.9"
   , "private": true
   , "dependencies": {
       "express": "2.4.0"
@@ -11,5 +11,6 @@
 		, "connect-form": "0.2.1"
 		, "knox": "0.0.9"
 		, "mime": "1.2.2"
-  }
+  },
+	"scripts": { "start": "./app.js" }
 }

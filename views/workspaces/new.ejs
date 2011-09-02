@@ -5,7 +5,7 @@
 <div id="workspace_creator">
 	<form id="create_form" action="/workspaces" method="post">
 			<h1>http://metaflies.com/<input name="workspace[name]" type="text" value="<%= workspace.name %>" /></h1>
-			<p>Persistent: <input type="checkbox" name="workspace[persistent]" value="true"></p>
+			<p class="soon">Persistent: <input type="checkbox" name="workspace[persistent]" value="true" disabled="disabled" /> <em>comming soon</em></p>
 			<p>Private: <input type="checkbox" name="workspace[private]" value="true"> Workspace Password: <input name="workspace[password]" type="text" value="" /></p>
 			<input id="send_button" type="submit" value="create" />
 	</form>	

@@ -110,7 +110,7 @@ app.get('/:workspace_id/bookmark', requireWorkspace, requireAuthorization, requi
 
 app.get('/d/:workspace_id/:upload.:ext', requireWorkspace, requireAuthorization, requireNickname, Metaflies.download);
 
-app.listen(9393);
+app.listen(process.env.port || 9393);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 function isURL(s){
