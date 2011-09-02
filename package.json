@@ -12,5 +12,5 @@
 		, "knox": "0.0.9"
 		, "mime": "1.2.2"
   },
-	"scripts": { "start": "app.js" }
+	"scripts": { "start": "node app.js" }
 }
