@@ -6,8 +6,9 @@
 var express = require('express'), 
 		MemoryStore = express.session.MemoryStore,
 		form = require('connect-form');
-		app = module.exports = express.createServer(form({ keepExtensions: true })), 
+		app = module.exports = express.createServer(),//form({ keepExtensions: true })), 
 		sessionStore = new MemoryStore(),
+		conf = require('./conf/conf'),
 		Workspace = require('./lib/workspace'),
 		Workspacer = require('./lib/workspacer'),
 		Metaflies = require('./ctrl/metaflies'), 
@@ -87,7 +88,7 @@ app.post('/:workspace_id/upload', requireWorkspace, requireAuthorization, requir
 	var upload = req.upload;
 	var workspace = req.workspace;
 	var currentUser = req.session.currentUser;
-	var post = {nickname: currentUser.nickname, uploadName: req.upload.filename, upload: upload}
+	var post = {nickname: currentUser.nickname, uploadKey: req.upload.key, upload: upload}
 	console.log('uploading...')
 	console.log(post);
 	workspace.addPost(post);
@@ -108,9 +109,9 @@ app.get('/:workspace_id/bookmark', requireWorkspace, requireAuthorization, requi
 });
 
 
-app.get('/d/:workspace_id/:upload.:ext', requireWorkspace, requireAuthorization, requireNickname, Metaflies.download);
+app.get('/d/:workspace_id/:key/:upload.:ext', requireWorkspace, requireAuthorization, requireNickname, Metaflies.download);
 
-app.listen(process.env.port || 9393);
+app.listen(conf.port || 9393);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
 function isURL(s){
