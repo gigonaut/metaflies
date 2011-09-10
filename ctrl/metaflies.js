@@ -62,6 +62,8 @@ Metaflies.download = function(req, res) {
 	
 	var path = [workspace.name, key, upload.name].join('/');
 	
+	console.log(path);
+	
 	res.writeHead(200, {
 		'Content-Type': file_type
 	});
