@@ -17,7 +17,6 @@ var s3 = knox.createClient({
 var Metaflies = {};
 
 Metaflies.upload = function(req, res, next) {
-	console.log('uploading');
 	var	workspaceName = req.workspace.name;
 	var form = new formidable.IncomingForm();
 
@@ -26,9 +25,10 @@ Metaflies.upload = function(req, res, next) {
 	form.addListener('file', function(field, file) {
 		var key = file.path.split('/').pop();
 		var ext = file.name.split('.').pop();
+		file.name = Metaflies.s3sanitize(file.name);
 		var path = [workspaceName, key, file.name].join('/');
-		var s3req = s3.putFile(file.path, path, function(err, res) {
-			console.log(res);
+		var type = mime.lookup(file.name);
+		var s3req = s3.putFile(file.path, path, {'Content-Type': type}, function(err, res) {
 			if (!err) {
 				var recordData = {
 					key: key,
@@ -48,6 +48,20 @@ Metaflies.upload = function(req, res, next) {
 	
 }
 
+Metaflies.s3sanitize = function(name, ext) {
+	var suf = name.split('.').pop();
+	var pref = name.split('.')[0]
+		.toLowerCase() // change everything to lowercase
+		.replace(/^\s+|\s+$/g, "") // trim leading and trailing spaces		
+		.replace(/[_|\s]+/g, "-") // change all spaces and underscores to a hyphen
+		.replace(/[^a-z0-9-]+/g, "") // remove all non-alphanumeric characters except the hyphen
+		.replace(/[-]+/g, "-") // replace multiple instances of the hyphen with a single instance
+		.replace(/^-+|-+$/g, "") // trim leading and trailing hyphens				
+		;
+		
+		return [pref, suf].join('.');
+}
+
 Metaflies.download = function(req, res) {
 	var workspace = req.workspace;
 	var filename = '' + req.param('upload') + '.' + req.param('ext');
@@ -61,8 +75,6 @@ Metaflies.download = function(req, res) {
 	file_type = mime.lookup(upload.filename);
 	
 	var path = [workspace.name, key, upload.name].join('/');
-	
-	console.log(path);
 	
 	res.writeHead(200, {
 		'Content-Type': file_type
