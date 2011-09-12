@@ -61,12 +61,12 @@ Metaflies.initEvents = function() {
 	$('.reply_form').live('submit', function(evt) {
 		var reply = {};
 		var workspace = self.getWorkspace();		
-		reply.reply = $(this).find('.reply').val();
+		reply.reply = $(this).find('.reply_field').val();
 		reply.postId = $(this).closest('.post').attr('id');
 		if (reply.reply.length > 0) {
 			socket.emit('reply sent', reply);
 		}
-		$(this).find('.reply').val('');
+		$(this).find('.reply_field').val('');
 		return false;
 	});
 }

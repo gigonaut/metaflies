@@ -1,8 +1,10 @@
 <div id="header">
-	<h1>Welcome to Metaflies</h1>
-	<p>Instant workspaces FTW!</p>
+	<div id="header_body">
+		<h1>Welcome to Metaflies</h1>
+		<p>Instant workspaces FTW!</p>		
+	</div>
 </div>
-<div id="workspace_creator">
+<div id="workspace_creator" class="setup_form">
 	<form id="create_form" action="/workspaces" method="post">
 			<h1>http://metaflies.com/<input name="workspace[name]" type="text" value="<%= workspace.name %>" /></h1>
 			<p class="soon">Persistent: <input type="checkbox" name="workspace[persistent]" value="true" disabled="disabled" /> <em>coming soon</em></p>

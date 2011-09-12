@@ -1,8 +1,107 @@
-/* @override http://localhost:9393/css/core.css */
+/* @override 
+	http://localhost:9393/css/core.css
+	http://metaflies.com/css/core.css
+*/
 
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 160px 0;
+}
+
+#header, #footer {
+	background-color: #111;
+	color: #fff;
+}
+
+#header {
+	padding: 10px 0;
+	margin: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+#header_body, #footer_body {
+	margin: 20px;
+	color: #555;
+}
+
+.setup_form {
+	margin: 250px auto;
+	width: 500px;
+	padding: 50px;
+	background-color: #ddd;
+	border: 1px solid #333;
+	border-radius: 10px;
+}
+
+h1 {
+	margin: 0;
+}
+
+#messages {
+	padding: 0 20px;
+}
+
+.post {
+	background-color: #efefef;
+	padding: 8px;
+	width: 400px;
+	border: 1px solid #aaa;
+}
+
+.post p.poster {
+	font-size: 11px;
+	color: #909090;
+	font-style: italic;
+}
+
+.post p {
+	padding: 5px;
+	margin: 2px;
+
+}
+.post div.replies {
+	padding: 0 0 0 25px;
+	margin: 20px 0;
+}
+
+.post_reply {
+	margin-top: 20px;
+	text-align: right;
+}
+
+.post_reply h3 {
+	margin: 5px 0;
+	text-align: left;
+}
+
+.reply_form textarea {
+	width: 370px;
+	height: 90px;
+}
+
+.reply {
+	background-color: #fafafa;
+	padding: 0 15px;
+}
+
+#workspace h1 {
+	margin-bottom: 15px;
+}
+
+#footer {
+	padding: 10px 0;
+	margin: 0;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+
+	text-align: right;
+	margin: 0;
+	background: #000 url(../img/metaflies_sml.png) no-repeat 15px;
 }
 
 a {

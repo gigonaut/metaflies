@@ -22,7 +22,7 @@ var express = require('express'),
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
-	app.set('view options', {title: 'Metaflies', routejs: null, _: _})
+	app.set('view options', {title: 'Metaflies', routejs: null, _: _, workspaceCount: 0})
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
@@ -44,7 +44,7 @@ app.configure('production', function(){
 
 app.get('/', function(req, res) {
 	var workspace = new Workspace({name: Workspace.getRandomId()});
-	res.render('workspaces/new', {workspace: workspace})
+	res.render('workspaces/new', {workspace: workspace, workspaceCount: workspacer.wsCount()})
 });
 
 app.get('/:workspace_id', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
@@ -52,7 +52,7 @@ app.get('/:workspace_id', requireWorkspace, requireAuthorization, requireNicknam
 	var workspaceId = req.param('workspace_id');
 	var workspace = req.workspace;
 	var bookmarklet = ['http:/', req.headers.host, req.param('workspace_id'), 'bookmark'].join('/');
-	res.render('workspaces/show', {workspace: workspace, bookmarklet: bookmarklet});
+	res.render('workspaces/show', {workspace: workspace, bookmarklet: bookmarklet, workspaceCount: workspacer.wsCount()});
 });
 
 app.post('/workspaces', function(req, res) {

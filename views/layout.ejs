@@ -14,7 +14,12 @@
   <body>
     <%- body %>
 	<div id="footer">
-		<p>metaflies is to be used for good, don't abuse it</p>
+		<div id="footer_body">
+			<p>metaflies is to be used for good, don't abuse it</p>
+			<% if (workspaceCount > 1) { %>
+			<p>There are currently <%= workspaceCount || "" %> workspaces</p>
+			<% } %>
+		</div>
 	</div>
   </body>
 </html>
