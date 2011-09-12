@@ -47,7 +47,7 @@
 				<p><%= post.message %></p>
 				<% } %>
 				<div class="replies">
-					<% _.each(post.replies, function(reply) {%>
+					<% _.each(post.replies.reverse(), function(reply) {%>
 						<div id="<%= reply.replyId %>" class="reply">
 							<p class="poster"><%= reply.nickname %> replied:</p>
 							<p><%= reply.reply %></p>
