@@ -1,7 +1,7 @@
 var socket = io.connect('http://' + window.location.hostname + ':9393');
 var Metaflies = {};
 
-var messageTemplate = new EJS({url: '/ejs/message.ejs'});
+var messageTemplate = new EJS({url: '/ejs/post.ejs'});
 var bookmarkTemplate = new EJS({url: '/ejs/bookmark.ejs'});
 var uploadTemplate = new EJS({url: '/ejs/upload.ejs'});
 var replyTemplate = new EJS({url: '/ejs/reply.ejs'});
