@@ -99,9 +99,10 @@ app.post('/:workspace_id/upload', requireWorkspace, requireAuthorization, requir
 
 
 app.get('/:workspace_id/bookmark', requireWorkspace, requireAuthorization, requireNickname, function(req, res) {
+	var currentUser = req.session.currentUser;
 	var location = req.param('location');
 	var locationName = req.param('name');
-	var post = {location: location, name: locationName}
+	var post = {nickname: currentUser.nickname, location: location, name: locationName}
 	var workspace = req.workspace
 	workspace.addPost(post);
 	metaIo.io.sockets.in(workspace.name).emit('bookmark added', post)

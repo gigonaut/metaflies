@@ -49,6 +49,11 @@ h1 {
 	padding: 8px;
 	width: 400px;
 	border: 1px solid #aaa;
+   margin: 0 0 8px;
+}
+
+.post p img {
+	width: 385px;
 }
 
 .post p.poster {

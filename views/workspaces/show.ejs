@@ -31,29 +31,30 @@
 <div id="workspace">
 	<h1>Messages</h1>
 	<div id="messages">
-		<%_.each(workspace.posts.reverse(), function(post) { %>
+		<%_.each(workspace.getLatestPosts(), function(post) { %>
 			<div id="<%= post.postId %>" class="post">
 				<% if (post.upload)  { %>
 				<p class="poster"><%= post.nickname %> posted a file:</p>
 				<% if (post.upload.mimeType.indexOf('image') !== -1) {%>
-				<p><img src="/d/<%= post.upload.metafliesPath %>" /></p>
+				<p><a href="/d/<%= post.upload.metafliesPath %>" target="_blank"><img src="/d/<%= post.upload.metafliesPath %>" /></a></p>
 				<% } %>
 				<p><a href="/d/<%= post.upload.metafliesPath %>"><%= post.upload.name %></a></p>
 				<% } else if (post.location) { %>
-				<p class="poster"><%= post.nickname %></p>
+				<p class="poster"><%= post.nickname %> added a link:</p>
 				<p><a href="<%= post.location %>"><%= post.name %></a></p>
 				<% } else { %>
 				<p class="poster"><%= post.nickname %> posted:</p>
 				<p><%= post.message %></p>
 				<% } %>
 				<div class="replies">
-					<% _.each(post.replies.reverse(), function(reply) {%>
+					<% _.each(workspace.getSortedReplies(post), function(reply) {%>
 						<div id="<%= reply.replyId %>" class="reply">
 							<p class="poster"><%= reply.nickname %> replied:</p>
 							<p><%= reply.reply %></p>
 						</div>
 					<% }) %>
 					<div class="post_reply">
+						<h3>Post a reply:</h3>
 						<form action="#" class="reply_form">
 							<textarea class="reply_field" name="reply"></textarea>
 							<p><input type="submit" value="+reply"></p>
