@@ -32,7 +32,7 @@ Metaflies.receiveReply = function(data) {
 	//console.log(data);
 	var thread = $('#' + data.postId + ' div.replies');
 	var html = replyTemplate.render(data);
-	thread.prepend(html);
+	thread.append(html);
 }
 
 Metaflies.init = function() {
@@ -69,6 +69,13 @@ Metaflies.initEvents = function() {
 		$(this).find('.reply_field').val('');
 		return false;
 	});
+	
+	$('textarea').live('keydown', function(e) {
+		if (e.keyCode == 13 && e.shiftKey) {
+			$(this).closest('form').submit();
+			e.preventDefault();
+		}
+	})
 }
 
 $(document).ready(function() {

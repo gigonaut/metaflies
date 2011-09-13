@@ -33,7 +33,9 @@ function MetaIo(options) {
 		socket.on('reply sent', function(reply) {
 			reply.nickname = socket.currentUser.nickname;
 			reply = workspace.addReply(reply);
-			io.sockets.in(workspaceId).emit('reply added', reply);
+			if (reply) {
+				io.sockets.in(workspaceId).emit('reply added', reply);
+			}
 		});
 
 		// socket.on('post message', function(data) {
