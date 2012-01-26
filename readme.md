@@ -1,5 +1,4 @@
-Simple base application using node.js and express.js
-----------------------------------------------------
+### Metaflies ###
+This version of metaflies is now open source because we are going a completely different direction with the project.
 
-There, I wrote a readme, now github will quit griping at me.
-
+This version is about creating simple workspaces quickly for collaboration, file sharing etc.
